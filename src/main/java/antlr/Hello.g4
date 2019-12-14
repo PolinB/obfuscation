@@ -5,25 +5,39 @@ start
     locals [java.util.HashMap<String, String> variables, int index]
     @init{
         $variables = new java.util.HashMap<>();
-        $index = 0;
+        $index = 10;
     }
-    : body {
+    : program {
         StringBuilder sb = new StringBuilder();
-        sb.append("#include <iostream>\nint main() {\n").append($body.sb.toString()).append("}");
+        sb.append($program.sb.toString());
         System.out.println(sb.toString());
     } EOF;
+
+program
+    returns [StringBuilder sb]
+        @init {
+            $sb = new StringBuilder();
+        }
+        : (INCLUDE {$sb.append($INCLUDE.text).append(" ");}
+         INCLUDE_NAME {$sb.append($INCLUDE_NAME.text).append("\n");})*
+         MAIN {$sb.append("\n").append($MAIN.text).append(" ");}
+         LPF {$sb.append($LPF.text).append("\n");}
+         body {$sb.append($body.sb.toString());}
+         RPF {$sb.append($RPF.text);};
 
 body
     returns [StringBuilder sb]
     @init {
         $sb = new StringBuilder();
-    }: (expression {$sb.append($expression.sb.toString()).append("\n");})*;
+    }
+    : (expression {$sb.append($expression.sb.toString()).append("\n");})*;
 
 expression
     returns [StringBuilder sb]
     @init {
         $sb = new StringBuilder();
-    }: type {
+    }
+    : type {
         $sb.append($type.sb.toString()).append(" ");
     } VARIABLE_NAME {
         String variableName = $VARIABLE_NAME.text;
@@ -90,5 +104,10 @@ DO: 'do';
 FOR: 'for';
 EQ : '=';
 INTEGER: ('-')?[1-9][0-9]*;
+INCLUDE: '#include';
+INCLUDE_NAME: '<' [a-zA-Z] [_\\.a-zA-Z]* '>';
+MAIN: 'int main()';
+LPF: '{';
+RPF: '}';
 VARIABLE_NAME : [a-zA-Z][a-zA-Z0-9_]*;
 WS : [ \t\n]+ -> skip;

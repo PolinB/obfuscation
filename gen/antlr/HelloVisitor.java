@@ -17,6 +17,12 @@ public interface HelloVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStart(HelloParser.StartContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HelloParser#program}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProgram(HelloParser.ProgramContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HelloParser#body}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

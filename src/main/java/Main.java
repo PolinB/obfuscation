@@ -9,7 +9,17 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         /*try {*/
-            HelloLexer lexerFst = new HelloLexer(CharStreams.fromString("long a = 45;\nlong a = 19;\nlong x = 95;\nlong c = 95;\nlong t = 95;"));
+            HelloLexer lexerFst = new HelloLexer(CharStreams.fromString("#include <iostream>\n" +
+                    "#include<string>\n" +
+                    "int main() {\n" +
+                    "int a = 7;\n" +
+                    "int b = 8;\n" +
+                    "int c = 13;\n" +
+                    "int a = 7;\n" +
+                    "int b = 8;\n" +
+                    "int c = 13;\n" +
+                    "int d = 42;\n" +
+                    "}"));
             HelloParser parserFst = new HelloParser(new CommonTokenStream(lexerFst));
             parserFst.start();
         /*} catch (IOException e) {
