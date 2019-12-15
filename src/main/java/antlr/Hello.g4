@@ -2,12 +2,17 @@
 grammar Hello;
 
 start
-    locals [java.util.HashMap<String, String> variables, int index, boolean connectedIostream, boolean connectedStd]
+    locals [java.util.HashMap<String, String> variables,
+            int index,
+            boolean connectedIostream,
+            boolean connectedStd,
+            boolean hasReturn]
     @init{
         $variables = new java.util.HashMap<>();
         $index = 10;
         $connectedIostream = false;
         $connectedStd = false;
+        $hasReturn = false;
     }
     : program {
         StringBuilder sb = new StringBuilder();
@@ -33,20 +38,32 @@ program
          })?
          MAIN {$sb.append("\n").append($MAIN.text).append(" ");}
          LPF {$sb.append($LPF.text).append("\n");}
-         body {$sb.append($body.sb.toString());}
+         body {
+            if (!$body.hasReturn) {
+                throw new RuntimeException("Forgot return.");
+            }
+            $sb.append($body.sb.toString());
+         }
          RPF {$sb.append($RPF.text);};
 
 body
-    returns [StringBuilder sb]
+    returns [StringBuilder sb, boolean hasReturn]
     @init {
         $sb = new StringBuilder();
+        $hasReturn = false;
     }
-    : (line {$sb.append($line.sb.toString()).append("\n");})*;
+    : (line {
+        $sb.append($line.sb.toString()).append("\n");
+        if ($line.hasReturn) {
+            $hasReturn = true;
+        }
+    })*;
 
 line
-    returns [StringBuilder sb]
+    returns [StringBuilder sb, boolean hasReturn]
     @init {
         $sb = new StringBuilder();
+        $hasReturn = false;
     }
     : variableDeclaration {
         $sb.append($variableDeclaration.sb.toString());
@@ -59,6 +76,10 @@ line
     }
     | coutLine {
         $sb.append($coutLine.sb.toString());
+    }
+    | returnLine {
+        $sb.append($returnLine.sb.toString());
+        $hasReturn = true;
     };
 
 variableDeclaration
@@ -240,6 +261,19 @@ coutLine
         $sb.append($SEMICLONE.text);
     };
 
+returnLine
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : RETURN {
+        $sb.append($RETURN.text).append(" ");
+    } integerOrVariableInRightPart {
+        $sb.append($integerOrVariableInRightPart.sb.toString());
+    } SEMICLONE {
+        $sb.append($SEMICLONE.text);
+    };
+
 USING: 'using';
 NAMESPACE: 'namespace';
 STD: 'std';
@@ -259,7 +293,7 @@ COUT: 'cout';
 DCOLON: '::';
 DLEFT: '<<';
 DRIGHT: '>>';
-INTEGER: ('-')?[1-9][0-9]*;
+INTEGER: (('-')?[1-9][0-9]* | '0');
 INCLUDE: '#include';
 INCLUDE_NAME: '<' [a-zA-Z] [_\\.a-zA-Z]* '>';
 MAIN: 'int main()';

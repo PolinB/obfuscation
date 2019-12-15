@@ -15,4 +15,5 @@ cout<< r;
 int d = 42;
 d = 9;
 r = 117;
+return 0;
 }

@@ -137,4 +137,14 @@ public interface HelloListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCoutLine(HelloParser.CoutLineContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#returnLine}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnLine(HelloParser.ReturnLineContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#returnLine}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnLine(HelloParser.ReturnLineContext ctx);
 }

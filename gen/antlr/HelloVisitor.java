@@ -88,4 +88,10 @@ public interface HelloVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCoutLine(HelloParser.CoutLineContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#returnLine}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnLine(HelloParser.ReturnLineContext ctx);
 }
