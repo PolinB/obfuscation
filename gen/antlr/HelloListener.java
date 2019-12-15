@@ -88,6 +88,16 @@ public interface HelloListener extends ParseTreeListener {
 	 */
 	void exitIntegerOrVariableInRightPart(HelloParser.IntegerOrVariableInRightPartContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HelloParser#variableInRightPart}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableInRightPart(HelloParser.VariableInRightPartContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#variableInRightPart}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableInRightPart(HelloParser.VariableInRightPartContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HelloParser#type}.
 	 * @param ctx the parse tree
 	 */
@@ -107,4 +117,24 @@ public interface HelloListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitUsingLine(HelloParser.UsingLineContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#cinLine}.
+	 * @param ctx the parse tree
+	 */
+	void enterCinLine(HelloParser.CinLineContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#cinLine}.
+	 * @param ctx the parse tree
+	 */
+	void exitCinLine(HelloParser.CinLineContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#coutLine}.
+	 * @param ctx the parse tree
+	 */
+	void enterCoutLine(HelloParser.CoutLineContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#coutLine}.
+	 * @param ctx the parse tree
+	 */
+	void exitCoutLine(HelloParser.CoutLineContext ctx);
 }

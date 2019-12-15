@@ -59,6 +59,12 @@ public interface HelloVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIntegerOrVariableInRightPart(HelloParser.IntegerOrVariableInRightPartContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HelloParser#variableInRightPart}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableInRightPart(HelloParser.VariableInRightPartContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HelloParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -70,4 +76,16 @@ public interface HelloVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitUsingLine(HelloParser.UsingLineContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#cinLine}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCinLine(HelloParser.CinLineContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#coutLine}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCoutLine(HelloParser.CoutLineContext ctx);
 }

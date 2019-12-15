@@ -53,6 +53,12 @@ line
     }
     | variableChange {
         $sb.append($variableChange.sb.toString());
+    }
+    | cinLine {
+        $sb.append($cinLine.sb.toString());
+    }
+    | coutLine {
+        $sb.append($coutLine.sb.toString());
     };
 
 variableDeclaration
@@ -141,7 +147,16 @@ integerOrVariableInRightPart
     : INTEGER {
         $sb.append($INTEGER.text);
     }
-    | VARIABLE_NAME {
+    | variableInRightPart {
+        $sb.append($variableInRightPart.sb.toString());
+    };
+
+variableInRightPart
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : VARIABLE_NAME {
         String variableName = $VARIABLE_NAME.text;
         if ($start::variables.containsKey(variableName)) {
             $sb.append($start::variables.get(variableName));
@@ -171,20 +186,79 @@ usingLine
     STD {$sb.append($STD.text);}
     SEMICLONE {$sb.append($SEMICLONE.text).append("\n");};
 
+cinLine
+    returns [StringBuilder sb]
+    locals [boolean hasStd]
+    @init {
+        $sb = new StringBuilder();
+        $hasStd = false;
+    }
+    : (STD DCOLON {
+        $sb.append($STD.text).append($DCOLON.text);
+        $cinLine::hasStd = true;
+    })? CIN {
+        if (!$start::connectedIostream) {
+            throw new RuntimeException("Forgot to connect iostream.");
+        }
+        if (!$cinLine::hasStd && !$start::connectedStd) {
+            throw new RuntimeException("Forgot to connect std.");
+        }
+        $sb.append($CIN.text);
+    } (DRIGHT {
+        $sb.append(" ").append($DRIGHT.text).append(" ");
+    } variableInRightPart {
+        $sb.append($variableInRightPart.sb.toString());
+    })+
+    SEMICLONE {
+        $sb.append($SEMICLONE.text);
+    };
+
+coutLine
+    returns [StringBuilder sb]
+    locals [boolean hasStd]
+    @init {
+        $sb = new StringBuilder();
+        $hasStd = false;
+    }
+    : (STD DCOLON {
+        $sb.append($STD.text).append($DCOLON.text);
+        $coutLine::hasStd = true;
+    })? COUT {
+        if (!$start::connectedIostream) {
+            throw new RuntimeException("Forgot to connect iostream.");
+        }
+        if (!$coutLine::hasStd && !$start::connectedStd) {
+            throw new RuntimeException("Forgot to connect std.");
+        }
+        $sb.append($COUT.text);
+    } (DLEFT {
+        $sb.append(" ").append($DLEFT.text).append(" ");
+    } integerOrVariableInRightPart {
+        $sb.append($integerOrVariableInRightPart.sb.toString());
+    })+
+    SEMICLONE {
+        $sb.append($SEMICLONE.text);
+    };
+
 USING: 'using';
 NAMESPACE: 'namespace';
 STD: 'std';
-SEMICLONE : ';';
-LONG : 'long';
-LONGLONG : 'long long';
-INT : 'int';
-BOOL : 'bool';
+SEMICLONE: ';';
+LONG: 'long';
+LONGLONG: 'long long';
+INT: 'int';
+BOOL: 'bool';
 VOID: 'void';
 RETURN: 'return';
 WHILE: 'while';
 DO: 'do';
 FOR: 'for';
-EQ : '=';
+EQ: '=';
+CIN: 'cin';
+COUT: 'cout';
+DCOLON: '::';
+DLEFT: '<<';
+DRIGHT: '>>';
 INTEGER: ('-')?[1-9][0-9]*;
 INCLUDE: '#include';
 INCLUDE_NAME: '<' [a-zA-Z] [_\\.a-zA-Z]* '>';

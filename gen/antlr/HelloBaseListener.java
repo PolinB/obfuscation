@@ -112,6 +112,18 @@ public class HelloBaseListener implements HelloListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVariableInRightPart(HelloParser.VariableInRightPartContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariableInRightPart(HelloParser.VariableInRightPartContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterType(HelloParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -131,6 +143,30 @@ public class HelloBaseListener implements HelloListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitUsingLine(HelloParser.UsingLineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCinLine(HelloParser.CinLineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCinLine(HelloParser.CinLineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCoutLine(HelloParser.CoutLineContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCoutLine(HelloParser.CoutLineContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

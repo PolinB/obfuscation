@@ -11,8 +11,9 @@ public class Main {
         try {
             //HelloLexer lexerFst = new HelloLexer(CharStreams.fromFileName("/home/polinb/IdeaProjects/Test/src/test/test1.cpp"));
             //HelloLexer lexerFst = new HelloLexer(CharStreams.fromFileName("/home/polinb/IdeaProjects/Test/src/test/test2.cpp"));
-            HelloLexer lexerFst = new HelloLexer(CharStreams.fromFileName("/home/polinb/IdeaProjects/Test/src/test/test3.cpp"));
+            //HelloLexer lexerFst = new HelloLexer(CharStreams.fromFileName("/home/polinb/IdeaProjects/Test/src/test/test3.cpp"));
             //HelloLexer lexerFst = new HelloLexer(CharStreams.fromFileName("/home/polinb/IdeaProjects/Test/src/test/test4.cpp"));
+            HelloLexer lexerFst = new HelloLexer(CharStreams.fromFileName("/home/polinb/IdeaProjects/Test/src/test/test5.cpp"));
             HelloParser parserFst = new HelloParser(new CommonTokenStream(lexerFst));
             parserFst.start();
         } catch (Exception e) {
