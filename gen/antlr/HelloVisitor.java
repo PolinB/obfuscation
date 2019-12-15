@@ -94,4 +94,34 @@ public interface HelloVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitReturnLine(HelloParser.ReturnLineContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpression(HelloParser.ExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#expressionPart}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpressionPart(HelloParser.ExpressionPartContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#addExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddExpression(HelloParser.AddExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#addExpressionPart}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddExpressionPart(HelloParser.AddExpressionPartContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#mulExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulExpression(HelloParser.MulExpressionContext ctx);
 }

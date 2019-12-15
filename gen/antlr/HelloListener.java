@@ -147,4 +147,54 @@ public interface HelloListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitReturnLine(HelloParser.ReturnLineContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpression(HelloParser.ExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpression(HelloParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#expressionPart}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressionPart(HelloParser.ExpressionPartContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#expressionPart}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressionPart(HelloParser.ExpressionPartContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#addExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddExpression(HelloParser.AddExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#addExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddExpression(HelloParser.AddExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#addExpressionPart}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddExpressionPart(HelloParser.AddExpressionPartContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#addExpressionPart}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddExpressionPart(HelloParser.AddExpressionPartContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#mulExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMulExpression(HelloParser.MulExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#mulExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMulExpression(HelloParser.MulExpressionContext ctx);
 }

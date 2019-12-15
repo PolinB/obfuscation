@@ -65,7 +65,7 @@ line
         $sb = new StringBuilder();
         $hasReturn = false;
     }
-    : variableDeclaration {
+    : (variableDeclaration {
         $sb.append($variableDeclaration.sb.toString());
     }
     | variableChange {
@@ -80,6 +80,8 @@ line
     | returnLine {
         $sb.append($returnLine.sb.toString());
         $hasReturn = true;
+    }) SEMICLONE {
+        $sb.append($SEMICLONE.text);
     };
 
 variableDeclaration
@@ -127,9 +129,7 @@ variableDeclaration
         $sb.append(" = ");
     } rightPart {
         $sb.append($rightPart.sb.toString());
-    })? SEMICLONE {
-        $sb.append($SEMICLONE.text);
-    };
+    })?;
 
 rightPart
     returns [StringBuilder sb]
@@ -138,6 +138,9 @@ rightPart
     }
     : integerOrVariableInRightPart {
         $sb.append($integerOrVariableInRightPart.sb.toString());
+    }
+    | expression {
+        $sb.append($expression.sb.toString());
     };
 
 variableChange
@@ -156,8 +159,6 @@ variableChange
         $sb.append(" = ");
     } rightPart {
         $sb.append($rightPart.sb.toString());
-    } SEMICLONE {
-        $sb.append($SEMICLONE.text);
     };
 
 integerOrVariableInRightPart
@@ -205,7 +206,9 @@ usingLine
     : USING {$sb.append($USING.text).append(" ");}
     NAMESPACE {$sb.append($NAMESPACE.text).append(" ");}
     STD {$sb.append($STD.text);}
-    SEMICLONE {$sb.append($SEMICLONE.text).append("\n");};
+    SEMICLONE {
+        $sb.append($SEMICLONE.text).append("\n");
+    };
 
 cinLine
     returns [StringBuilder sb]
@@ -229,10 +232,7 @@ cinLine
         $sb.append(" ").append($DRIGHT.text).append(" ");
     } variableInRightPart {
         $sb.append($variableInRightPart.sb.toString());
-    })+
-    SEMICLONE {
-        $sb.append($SEMICLONE.text);
-    };
+    })+;
 
 coutLine
     returns [StringBuilder sb]
@@ -256,10 +256,7 @@ coutLine
         $sb.append(" ").append($DLEFT.text).append(" ");
     } integerOrVariableInRightPart {
         $sb.append($integerOrVariableInRightPart.sb.toString());
-    })+
-    SEMICLONE {
-        $sb.append($SEMICLONE.text);
-    };
+    })+;
 
 returnLine
     returns [StringBuilder sb]
@@ -270,10 +267,70 @@ returnLine
         $sb.append($RETURN.text).append(" ");
     } integerOrVariableInRightPart {
         $sb.append($integerOrVariableInRightPart.sb.toString());
-    } SEMICLONE {
-        $sb.append($SEMICLONE.text);
     };
 
+expression
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : addExpression {
+        $sb.append($addExpression.sb.toString());
+    }
+    | addExpression expressionPart {
+        $sb.append($addExpression.sb.toString()).append($expressionPart.sb.toString());
+    };
+
+expressionPart
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : PLUS addExpression {
+        $sb.append(" ").append($PLUS.text).append(" ").append($addExpression.sb.toString());
+    }
+    | PLUS addExpression expressionPart {
+        $sb.append(" ").append($PLUS.text).append(" ").append($addExpression.sb.toString()).append($expressionPart.sb.toString());
+    };
+
+addExpression
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : mulExpression {
+        $sb.append($mulExpression.sb.toString());
+    }
+    | mulExpression addExpressionPart {
+        $sb.append($mulExpression.sb.toString()).append($addExpressionPart.sb.toString());
+    };
+
+addExpressionPart
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : MUL mulExpression {
+        $sb.append(" ").append($MUL.text).append(" ").append($mulExpression.sb.toString());
+    }
+    | MUL mulExpression addExpressionPart {
+        $sb.append(" ").append($MUL.text).append(" ").append($mulExpression.sb.toString()).append($addExpressionPart.sb.toString());
+    };
+
+mulExpression
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : LPAR expression RPAR {
+        $sb.append($LPAR.text).append($expression.sb.toString()).append($RPAR.text);
+    }
+    | integerOrVariableInRightPart {
+        $sb.append($integerOrVariableInRightPart.sb.toString());
+    };
+
+LPAR: '(';
+RPAR: ')';
 USING: 'using';
 NAMESPACE: 'namespace';
 STD: 'std';
@@ -284,9 +341,6 @@ INT: 'int';
 BOOL: 'bool';
 VOID: 'void';
 RETURN: 'return';
-WHILE: 'while';
-DO: 'do';
-FOR: 'for';
 EQ: '=';
 CIN: 'cin';
 COUT: 'cout';
@@ -294,6 +348,8 @@ DCOLON: '::';
 DLEFT: '<<';
 DRIGHT: '>>';
 INTEGER: (('-')?[1-9][0-9]* | '0');
+PLUS: '+';
+MUL: '*';
 INCLUDE: '#include';
 INCLUDE_NAME: '<' [a-zA-Z] [_\\.a-zA-Z]* '>';
 MAIN: 'int main()';
