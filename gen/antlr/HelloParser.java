@@ -366,7 +366,8 @@ public class HelloParser extends Parser {
 
 			        String variableName = (((ExpressionContext)_localctx).VARIABLE_NAME!=null?((ExpressionContext)_localctx).VARIABLE_NAME.getText():null);
 			        if (((StartContext)getInvokingContext(0)).variables.containsKey(variableName)) {
-			            _localctx.sb.append(((StartContext)getInvokingContext(0)).variables.get(variableName));
+			            /*_localctx.sb.append(((StartContext)getInvokingContext(0)).variables.get(variableName));*/
+			            throw new RuntimeException("Re-declaring a variable.");
 			        } else {
 			            int curNumber = (((StartContext)getInvokingContext(0)).index) / 2;
 			            StringBuilder name = new StringBuilder();
@@ -393,8 +394,8 @@ public class HelloParser extends Parser {
 			                name.insert(0, 'I');
 			            }
 			            String newName = name.toString();
-			            ((StartContext)getInvokingContext(0)).variables.put(variableName, newName/*Integer.toString(((StartContext)getInvokingContext(0)).index)*/);
-			            _localctx.sb.append(newName/*Integer.toString(((StartContext)getInvokingContext(0)).index)*/);
+			            ((StartContext)getInvokingContext(0)).variables.put(variableName, newName);
+			            _localctx.sb.append(newName);
 			            ((StartContext)getInvokingContext(0)).index++;
 			        }
 			    

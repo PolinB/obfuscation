@@ -8,13 +8,10 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        /*try {*/
+        try {
             HelloLexer lexerFst = new HelloLexer(CharStreams.fromString("#include <iostream>\n" +
                     "#include<string>\n" +
                     "int main() {\n" +
-                    "int a = 7;\n" +
-                    "int b = 8;\n" +
-                    "int c = 13;\n" +
                     "int a = 7;\n" +
                     "int b = 8;\n" +
                     "int c = 13;\n" +
@@ -22,8 +19,8 @@ public class Main {
                     "}"));
             HelloParser parserFst = new HelloParser(new CommonTokenStream(lexerFst));
             parserFst.start();
-        /*} catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }

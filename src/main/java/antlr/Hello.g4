@@ -42,7 +42,8 @@ expression
     } VARIABLE_NAME {
         String variableName = $VARIABLE_NAME.text;
         if ($start::variables.containsKey(variableName)) {
-            $sb.append($start::variables.get(variableName));
+            /*$sb.append($start::variables.get(variableName));*/
+            throw new RuntimeException("Re-declaring a variable.");
         } else {
             int curNumber = ($start::index) / 2;
             StringBuilder name = new StringBuilder();
@@ -69,8 +70,8 @@ expression
                 name.insert(0, 'I');
             }
             String newName = name.toString();
-            $start::variables.put(variableName, newName/*Integer.toString($start::index)*/);
-            $sb.append(newName/*Integer.toString($start::index)*/);
+            $start::variables.put(variableName, newName);
+            $sb.append(newName);
             $start::index++;
         }
     } EQ {
