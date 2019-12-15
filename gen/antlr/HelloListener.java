@@ -38,6 +38,16 @@ public interface HelloListener extends ParseTreeListener {
 	 */
 	void exitBody(HelloParser.BodyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HelloParser#line}.
+	 * @param ctx the parse tree
+	 */
+	void enterLine(HelloParser.LineContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#line}.
+	 * @param ctx the parse tree
+	 */
+	void exitLine(HelloParser.LineContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HelloParser#variableDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -47,6 +57,26 @@ public interface HelloListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariableDeclaration(HelloParser.VariableDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#rightPart}.
+	 * @param ctx the parse tree
+	 */
+	void enterRightPart(HelloParser.RightPartContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#rightPart}.
+	 * @param ctx the parse tree
+	 */
+	void exitRightPart(HelloParser.RightPartContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#variableChange}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableChange(HelloParser.VariableChangeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#variableChange}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableChange(HelloParser.VariableChangeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HelloParser#integerOrVariableInRightPart}.
 	 * @param ctx the parse tree

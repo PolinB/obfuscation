@@ -21,12 +21,13 @@ public class HelloParser extends Parser {
 		DO=9, FOR=10, EQ=11, INTEGER=12, INCLUDE=13, INCLUDE_NAME=14, MAIN=15, 
 		LPF=16, RPF=17, VARIABLE_NAME=18, WS=19;
 	public static final int
-		RULE_start = 0, RULE_program = 1, RULE_body = 2, RULE_variableDeclaration = 3, 
-		RULE_integerOrVariableInRightPart = 4, RULE_type = 5;
+		RULE_start = 0, RULE_program = 1, RULE_body = 2, RULE_line = 3, RULE_variableDeclaration = 4, 
+		RULE_rightPart = 5, RULE_variableChange = 6, RULE_integerOrVariableInRightPart = 7, 
+		RULE_type = 8;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"start", "program", "body", "variableDeclaration", "integerOrVariableInRightPart", 
-			"type"
+			"start", "program", "body", "line", "variableDeclaration", "rightPart", 
+			"variableChange", "integerOrVariableInRightPart", "type"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -134,14 +135,14 @@ public class HelloParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(12);
+			setState(18);
 			((StartContext)_localctx).program = program();
 
 			        StringBuilder sb = new StringBuilder();
 			        sb.append(((StartContext)_localctx).program.sb.toString());
 			        System.out.println(sb.toString());
 			    
-			setState(14);
+			setState(20);
 			match(EOF);
 			}
 		}
@@ -207,34 +208,34 @@ public class HelloParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(22);
+			setState(28);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==INCLUDE) {
 				{
 				{
-				setState(16);
+				setState(22);
 				((ProgramContext)_localctx).INCLUDE = match(INCLUDE);
 				_localctx.sb.append((((ProgramContext)_localctx).INCLUDE!=null?((ProgramContext)_localctx).INCLUDE.getText():null)).append(" ");
-				setState(18);
+				setState(24);
 				((ProgramContext)_localctx).INCLUDE_NAME = match(INCLUDE_NAME);
 				_localctx.sb.append((((ProgramContext)_localctx).INCLUDE_NAME!=null?((ProgramContext)_localctx).INCLUDE_NAME.getText():null)).append("\n");
 				}
 				}
-				setState(24);
+				setState(30);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(25);
+			setState(31);
 			((ProgramContext)_localctx).MAIN = match(MAIN);
 			_localctx.sb.append("\n").append((((ProgramContext)_localctx).MAIN!=null?((ProgramContext)_localctx).MAIN.getText():null)).append(" ");
-			setState(27);
+			setState(33);
 			((ProgramContext)_localctx).LPF = match(LPF);
 			_localctx.sb.append((((ProgramContext)_localctx).LPF!=null?((ProgramContext)_localctx).LPF.getText():null)).append("\n");
-			setState(29);
+			setState(35);
 			((ProgramContext)_localctx).body = body();
 			_localctx.sb.append(((ProgramContext)_localctx).body.sb.toString());
-			setState(31);
+			setState(37);
 			((ProgramContext)_localctx).RPF = match(RPF);
 			_localctx.sb.append((((ProgramContext)_localctx).RPF!=null?((ProgramContext)_localctx).RPF.getText():null));
 			}
@@ -252,12 +253,12 @@ public class HelloParser extends Parser {
 
 	public static class BodyContext extends ParserRuleContext {
 		public StringBuilder sb;
-		public VariableDeclarationContext variableDeclaration;
-		public List<VariableDeclarationContext> variableDeclaration() {
-			return getRuleContexts(VariableDeclarationContext.class);
+		public LineContext line;
+		public List<LineContext> line() {
+			return getRuleContexts(LineContext.class);
 		}
-		public VariableDeclarationContext variableDeclaration(int i) {
-			return getRuleContext(VariableDeclarationContext.class,i);
+		public LineContext line(int i) {
+			return getRuleContext(LineContext.class,i);
 		}
 		public BodyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -288,21 +289,99 @@ public class HelloParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(39);
+			setState(45);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LONG) | (1L << LONGLONG) | (1L << INT) | (1L << BOOL) | (1L << VOID))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LONG) | (1L << LONGLONG) | (1L << INT) | (1L << BOOL) | (1L << VOID) | (1L << VARIABLE_NAME))) != 0)) {
 				{
 				{
-				setState(34);
-				((BodyContext)_localctx).variableDeclaration = variableDeclaration();
-				_localctx.sb.append(((BodyContext)_localctx).variableDeclaration.sb.toString()).append("\n");
+				setState(40);
+				((BodyContext)_localctx).line = line();
+				_localctx.sb.append(((BodyContext)_localctx).line.sb.toString()).append("\n");
 				}
 				}
-				setState(41);
+				setState(47);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class LineContext extends ParserRuleContext {
+		public StringBuilder sb;
+		public VariableDeclarationContext variableDeclaration;
+		public VariableChangeContext variableChange;
+		public VariableDeclarationContext variableDeclaration() {
+			return getRuleContext(VariableDeclarationContext.class,0);
+		}
+		public VariableChangeContext variableChange() {
+			return getRuleContext(VariableChangeContext.class,0);
+		}
+		public LineContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_line; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HelloListener ) ((HelloListener)listener).enterLine(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HelloListener ) ((HelloListener)listener).exitLine(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HelloVisitor ) return ((HelloVisitor<? extends T>)visitor).visitLine(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final LineContext line() throws RecognitionException {
+		LineContext _localctx = new LineContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_line);
+
+		        ((LineContext)_localctx).sb =  new StringBuilder();
+		    
+		try {
+			setState(54);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case LONG:
+			case LONGLONG:
+			case INT:
+			case BOOL:
+			case VOID:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(48);
+				((LineContext)_localctx).variableDeclaration = variableDeclaration();
+
+				        _localctx.sb.append(((LineContext)_localctx).variableDeclaration.sb.toString());
+				    
+				}
+				break;
+			case VARIABLE_NAME:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(51);
+				((LineContext)_localctx).variableChange = variableChange();
+
+				        _localctx.sb.append(((LineContext)_localctx).variableChange.sb.toString());
+				    
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -320,17 +399,15 @@ public class HelloParser extends Parser {
 		public StringBuilder sb;
 		public TypeContext type;
 		public Token VARIABLE_NAME;
-		public IntegerOrVariableInRightPartContext integerOrVariableInRightPart;
-		public Token SEMICLONE;
+		public RightPartContext rightPart;
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
 		}
 		public TerminalNode VARIABLE_NAME() { return getToken(HelloParser.VARIABLE_NAME, 0); }
 		public TerminalNode EQ() { return getToken(HelloParser.EQ, 0); }
-		public IntegerOrVariableInRightPartContext integerOrVariableInRightPart() {
-			return getRuleContext(IntegerOrVariableInRightPartContext.class,0);
+		public RightPartContext rightPart() {
+			return getRuleContext(RightPartContext.class,0);
 		}
-		public TerminalNode SEMICLONE() { return getToken(HelloParser.SEMICLONE, 0); }
 		public VariableDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -352,24 +429,23 @@ public class HelloParser extends Parser {
 
 	public final VariableDeclarationContext variableDeclaration() throws RecognitionException {
 		VariableDeclarationContext _localctx = new VariableDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_variableDeclaration);
+		enterRule(_localctx, 8, RULE_variableDeclaration);
 
 		        ((VariableDeclarationContext)_localctx).sb =  new StringBuilder();
 		    
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(42);
+			setState(56);
 			((VariableDeclarationContext)_localctx).type = type();
 
 			        _localctx.sb.append(((VariableDeclarationContext)_localctx).type.sb.toString()).append(" ");
 			    
-			setState(44);
+			setState(58);
 			((VariableDeclarationContext)_localctx).VARIABLE_NAME = match(VARIABLE_NAME);
 
 			        String variableName = (((VariableDeclarationContext)_localctx).VARIABLE_NAME!=null?((VariableDeclarationContext)_localctx).VARIABLE_NAME.getText():null);
 			        if (((StartContext)getInvokingContext(0)).variables.containsKey(variableName)) {
-			            /*_localctx.sb.append(((StartContext)getInvokingContext(0)).variables.get(variableName));*/
 			            throw new RuntimeException("Re-declaring a variable.");
 			        } else {
 			            int curNumber = (((StartContext)getInvokingContext(0)).index) / 2;
@@ -402,20 +478,144 @@ public class HelloParser extends Parser {
 			            ((StartContext)getInvokingContext(0)).index++;
 			        }
 			    
-			setState(46);
+			setState(60);
 			match(EQ);
 
 			        _localctx.sb.append(" = ");
 			    
-			setState(48);
-			((VariableDeclarationContext)_localctx).integerOrVariableInRightPart = integerOrVariableInRightPart();
+			setState(62);
+			((VariableDeclarationContext)_localctx).rightPart = rightPart();
 
-			        _localctx.sb.append(((VariableDeclarationContext)_localctx).integerOrVariableInRightPart.sb.toString());
+			        _localctx.sb.append(((VariableDeclarationContext)_localctx).rightPart.sb.toString());
 			    
-			setState(50);
-			((VariableDeclarationContext)_localctx).SEMICLONE = match(SEMICLONE);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
 
-			        _localctx.sb.append((((VariableDeclarationContext)_localctx).SEMICLONE!=null?((VariableDeclarationContext)_localctx).SEMICLONE.getText():null));
+	public static class RightPartContext extends ParserRuleContext {
+		public StringBuilder sb;
+		public IntegerOrVariableInRightPartContext integerOrVariableInRightPart;
+		public Token SEMICLONE;
+		public IntegerOrVariableInRightPartContext integerOrVariableInRightPart() {
+			return getRuleContext(IntegerOrVariableInRightPartContext.class,0);
+		}
+		public TerminalNode SEMICLONE() { return getToken(HelloParser.SEMICLONE, 0); }
+		public RightPartContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_rightPart; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HelloListener ) ((HelloListener)listener).enterRightPart(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HelloListener ) ((HelloListener)listener).exitRightPart(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HelloVisitor ) return ((HelloVisitor<? extends T>)visitor).visitRightPart(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final RightPartContext rightPart() throws RecognitionException {
+		RightPartContext _localctx = new RightPartContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_rightPart);
+
+		        ((RightPartContext)_localctx).sb =  new StringBuilder();
+		    
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(65);
+			((RightPartContext)_localctx).integerOrVariableInRightPart = integerOrVariableInRightPart();
+
+			        _localctx.sb.append(((RightPartContext)_localctx).integerOrVariableInRightPart.sb.toString());
+			    
+			setState(67);
+			((RightPartContext)_localctx).SEMICLONE = match(SEMICLONE);
+
+			        _localctx.sb.append((((RightPartContext)_localctx).SEMICLONE!=null?((RightPartContext)_localctx).SEMICLONE.getText():null));
+			    
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VariableChangeContext extends ParserRuleContext {
+		public StringBuilder sb;
+		public Token VARIABLE_NAME;
+		public RightPartContext rightPart;
+		public TerminalNode VARIABLE_NAME() { return getToken(HelloParser.VARIABLE_NAME, 0); }
+		public TerminalNode EQ() { return getToken(HelloParser.EQ, 0); }
+		public RightPartContext rightPart() {
+			return getRuleContext(RightPartContext.class,0);
+		}
+		public VariableChangeContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_variableChange; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HelloListener ) ((HelloListener)listener).enterVariableChange(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HelloListener ) ((HelloListener)listener).exitVariableChange(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HelloVisitor ) return ((HelloVisitor<? extends T>)visitor).visitVariableChange(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final VariableChangeContext variableChange() throws RecognitionException {
+		VariableChangeContext _localctx = new VariableChangeContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_variableChange);
+
+		        ((VariableChangeContext)_localctx).sb =  new StringBuilder();
+		    
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(70);
+			((VariableChangeContext)_localctx).VARIABLE_NAME = match(VARIABLE_NAME);
+
+			        String variableName = (((VariableChangeContext)_localctx).VARIABLE_NAME!=null?((VariableChangeContext)_localctx).VARIABLE_NAME.getText():null);
+			        if (((StartContext)getInvokingContext(0)).variables.containsKey(variableName)) {
+			            _localctx.sb.append(((StartContext)getInvokingContext(0)).variables.get(variableName));
+			        } else {
+			            throw new RuntimeException("Unknown variable in left part.");
+			        }
+			    
+			setState(72);
+			match(EQ);
+
+			        _localctx.sb.append(" = ");
+			    
+			setState(74);
+			((VariableChangeContext)_localctx).rightPart = rightPart();
+
+			        _localctx.sb.append(((VariableChangeContext)_localctx).rightPart.sb.toString());
 			    
 			}
 		}
@@ -457,18 +657,18 @@ public class HelloParser extends Parser {
 
 	public final IntegerOrVariableInRightPartContext integerOrVariableInRightPart() throws RecognitionException {
 		IntegerOrVariableInRightPartContext _localctx = new IntegerOrVariableInRightPartContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_integerOrVariableInRightPart);
+		enterRule(_localctx, 14, RULE_integerOrVariableInRightPart);
 
 		        ((IntegerOrVariableInRightPartContext)_localctx).sb =  new StringBuilder();
 		    
 		try {
-			setState(57);
+			setState(81);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case INTEGER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(53);
+				setState(77);
 				((IntegerOrVariableInRightPartContext)_localctx).INTEGER = match(INTEGER);
 
 				        _localctx.sb.append((((IntegerOrVariableInRightPartContext)_localctx).INTEGER!=null?((IntegerOrVariableInRightPartContext)_localctx).INTEGER.getText():null));
@@ -478,7 +678,7 @@ public class HelloParser extends Parser {
 			case VARIABLE_NAME:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(55);
+				setState(79);
 				((IntegerOrVariableInRightPartContext)_localctx).VARIABLE_NAME = match(VARIABLE_NAME);
 
 				        String variableName = (((IntegerOrVariableInRightPartContext)_localctx).VARIABLE_NAME!=null?((IntegerOrVariableInRightPartContext)_localctx).VARIABLE_NAME.getText():null);
@@ -538,18 +738,18 @@ public class HelloParser extends Parser {
 
 	public final TypeContext type() throws RecognitionException {
 		TypeContext _localctx = new TypeContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_type);
+		enterRule(_localctx, 16, RULE_type);
 
 		        ((TypeContext)_localctx).sb =  new StringBuilder();
 		    
 		try {
-			setState(69);
+			setState(93);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LONG:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(59);
+				setState(83);
 				((TypeContext)_localctx).LONG = match(LONG);
 				_localctx.sb.append((((TypeContext)_localctx).LONG!=null?((TypeContext)_localctx).LONG.getText():null));
 				}
@@ -557,7 +757,7 @@ public class HelloParser extends Parser {
 			case LONGLONG:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(61);
+				setState(85);
 				((TypeContext)_localctx).LONGLONG = match(LONGLONG);
 				_localctx.sb.append((((TypeContext)_localctx).LONGLONG!=null?((TypeContext)_localctx).LONGLONG.getText():null));
 				}
@@ -565,7 +765,7 @@ public class HelloParser extends Parser {
 			case INT:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(63);
+				setState(87);
 				((TypeContext)_localctx).INT = match(INT);
 				_localctx.sb.append((((TypeContext)_localctx).INT!=null?((TypeContext)_localctx).INT.getText():null));
 				}
@@ -573,7 +773,7 @@ public class HelloParser extends Parser {
 			case BOOL:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(65);
+				setState(89);
 				((TypeContext)_localctx).BOOL = match(BOOL);
 				_localctx.sb.append((((TypeContext)_localctx).BOOL!=null?((TypeContext)_localctx).BOOL.getText():null));
 				}
@@ -581,7 +781,7 @@ public class HelloParser extends Parser {
 			case VOID:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(67);
+				setState(91);
 				((TypeContext)_localctx).VOID = match(VOID);
 				_localctx.sb.append((((TypeContext)_localctx).VOID!=null?((TypeContext)_localctx).VOID.getText():null));
 				}
@@ -602,24 +802,29 @@ public class HelloParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\25J\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\7\3"+
-		"\27\n\3\f\3\16\3\32\13\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3"+
-		"\4\7\4(\n\4\f\4\16\4+\13\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
-		"\3\6\3\6\3\6\3\6\5\6<\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7"+
-		"H\n\7\3\7\2\2\b\2\4\6\b\n\f\2\2\2J\2\16\3\2\2\2\4\30\3\2\2\2\6)\3\2\2"+
-		"\2\b,\3\2\2\2\n;\3\2\2\2\fG\3\2\2\2\16\17\5\4\3\2\17\20\b\2\1\2\20\21"+
-		"\7\2\2\3\21\3\3\2\2\2\22\23\7\17\2\2\23\24\b\3\1\2\24\25\7\20\2\2\25\27"+
-		"\b\3\1\2\26\22\3\2\2\2\27\32\3\2\2\2\30\26\3\2\2\2\30\31\3\2\2\2\31\33"+
-		"\3\2\2\2\32\30\3\2\2\2\33\34\7\21\2\2\34\35\b\3\1\2\35\36\7\22\2\2\36"+
-		"\37\b\3\1\2\37 \5\6\4\2 !\b\3\1\2!\"\7\23\2\2\"#\b\3\1\2#\5\3\2\2\2$%"+
-		"\5\b\5\2%&\b\4\1\2&(\3\2\2\2\'$\3\2\2\2(+\3\2\2\2)\'\3\2\2\2)*\3\2\2\2"+
-		"*\7\3\2\2\2+)\3\2\2\2,-\5\f\7\2-.\b\5\1\2./\7\24\2\2/\60\b\5\1\2\60\61"+
-		"\7\r\2\2\61\62\b\5\1\2\62\63\5\n\6\2\63\64\b\5\1\2\64\65\7\3\2\2\65\66"+
-		"\b\5\1\2\66\t\3\2\2\2\678\7\16\2\28<\b\6\1\29:\7\24\2\2:<\b\6\1\2;\67"+
-		"\3\2\2\2;9\3\2\2\2<\13\3\2\2\2=>\7\4\2\2>H\b\7\1\2?@\7\5\2\2@H\b\7\1\2"+
-		"AB\7\6\2\2BH\b\7\1\2CD\7\7\2\2DH\b\7\1\2EF\7\b\2\2FH\b\7\1\2G=\3\2\2\2"+
-		"G?\3\2\2\2GA\3\2\2\2GC\3\2\2\2GE\3\2\2\2H\r\3\2\2\2\6\30);G";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\25b\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3\2\3\2"+
+		"\3\2\3\3\3\3\3\3\3\3\7\3\35\n\3\f\3\16\3 \13\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\4\3\4\3\4\7\4.\n\4\f\4\16\4\61\13\4\3\5\3\5\3\5\3\5\3\5"+
+		"\3\5\5\59\n\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7"+
+		"\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\5\tT\n\t\3\n\3\n\3\n\3\n"+
+		"\3\n\3\n\3\n\3\n\3\n\3\n\5\n`\n\n\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2\2"+
+		"\2`\2\24\3\2\2\2\4\36\3\2\2\2\6/\3\2\2\2\b8\3\2\2\2\n:\3\2\2\2\fC\3\2"+
+		"\2\2\16H\3\2\2\2\20S\3\2\2\2\22_\3\2\2\2\24\25\5\4\3\2\25\26\b\2\1\2\26"+
+		"\27\7\2\2\3\27\3\3\2\2\2\30\31\7\17\2\2\31\32\b\3\1\2\32\33\7\20\2\2\33"+
+		"\35\b\3\1\2\34\30\3\2\2\2\35 \3\2\2\2\36\34\3\2\2\2\36\37\3\2\2\2\37!"+
+		"\3\2\2\2 \36\3\2\2\2!\"\7\21\2\2\"#\b\3\1\2#$\7\22\2\2$%\b\3\1\2%&\5\6"+
+		"\4\2&\'\b\3\1\2\'(\7\23\2\2()\b\3\1\2)\5\3\2\2\2*+\5\b\5\2+,\b\4\1\2,"+
+		".\3\2\2\2-*\3\2\2\2.\61\3\2\2\2/-\3\2\2\2/\60\3\2\2\2\60\7\3\2\2\2\61"+
+		"/\3\2\2\2\62\63\5\n\6\2\63\64\b\5\1\2\649\3\2\2\2\65\66\5\16\b\2\66\67"+
+		"\b\5\1\2\679\3\2\2\28\62\3\2\2\28\65\3\2\2\29\t\3\2\2\2:;\5\22\n\2;<\b"+
+		"\6\1\2<=\7\24\2\2=>\b\6\1\2>?\7\r\2\2?@\b\6\1\2@A\5\f\7\2AB\b\6\1\2B\13"+
+		"\3\2\2\2CD\5\20\t\2DE\b\7\1\2EF\7\3\2\2FG\b\7\1\2G\r\3\2\2\2HI\7\24\2"+
+		"\2IJ\b\b\1\2JK\7\r\2\2KL\b\b\1\2LM\5\f\7\2MN\b\b\1\2N\17\3\2\2\2OP\7\16"+
+		"\2\2PT\b\t\1\2QR\7\24\2\2RT\b\t\1\2SO\3\2\2\2SQ\3\2\2\2T\21\3\2\2\2UV"+
+		"\7\4\2\2V`\b\n\1\2WX\7\5\2\2X`\b\n\1\2YZ\7\6\2\2Z`\b\n\1\2[\\\7\7\2\2"+
+		"\\`\b\n\1\2]^\7\b\2\2^`\b\n\1\2_U\3\2\2\2_W\3\2\2\2_Y\3\2\2\2_[\3\2\2"+
+		"\2_]\3\2\2\2`\23\3\2\2\2\7\36/8S_";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

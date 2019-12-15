@@ -2,10 +2,12 @@
 grammar Hello;
 
 start
-    locals [java.util.HashMap<String, String> variables, int index]
+    locals [java.util.HashMap<String, String> variables, int index, bool connectedIostream, bool connectedStd]
     @init{
         $variables = new java.util.HashMap<>();
         $index = 10;
+        $connectedIostream = false;
+        $connectedStd = false;
     }
     : program {
         StringBuilder sb = new StringBuilder();
@@ -30,7 +32,19 @@ body
     @init {
         $sb = new StringBuilder();
     }
-    : (variableDeclaration {$sb.append($variableDeclaration.sb.toString()).append("\n");})*;
+    : (line {$sb.append($line.sb.toString()).append("\n");})*;
+
+line
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : variableDeclaration {
+        $sb.append($variableDeclaration.sb.toString());
+    }
+    | variableChange {
+        $sb.append($variableChange.sb.toString());
+    };
 
 variableDeclaration
     returns [StringBuilder sb]
@@ -42,7 +56,6 @@ variableDeclaration
     } VARIABLE_NAME {
         String variableName = $VARIABLE_NAME.text;
         if ($start::variables.containsKey(variableName)) {
-            /*$sb.append($start::variables.get(variableName));*/
             throw new RuntimeException("Re-declaring a variable.");
         } else {
             int curNumber = ($start::index) / 2;
@@ -76,10 +89,37 @@ variableDeclaration
         }
     } EQ {
         $sb.append(" = ");
-    } integerOrVariableInRightPart {
+    } rightPart {
+        $sb.append($rightPart.sb.toString());
+    };
+
+rightPart
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : integerOrVariableInRightPart {
         $sb.append($integerOrVariableInRightPart.sb.toString());
     } SEMICLONE {
         $sb.append($SEMICLONE.text);
+    };
+
+variableChange
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : VARIABLE_NAME {
+        String variableName = $VARIABLE_NAME.text;
+        if ($start::variables.containsKey(variableName)) {
+            $sb.append($start::variables.get(variableName));
+        } else {
+            throw new RuntimeException("Unknown variable in left part.");
+        }
+    } EQ {
+        $sb.append(" = ");
+    } rightPart {
+        $sb.append($rightPart.sb.toString());
     };
 
 integerOrVariableInRightPart

@@ -29,11 +29,29 @@ public interface HelloVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBody(HelloParser.BodyContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HelloParser#line}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLine(HelloParser.LineContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HelloParser#variableDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitVariableDeclaration(HelloParser.VariableDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#rightPart}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRightPart(HelloParser.RightPartContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#variableChange}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableChange(HelloParser.VariableChangeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HelloParser#integerOrVariableInRightPart}.
 	 * @param ctx the parse tree
