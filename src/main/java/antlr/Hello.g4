@@ -1,14 +1,131 @@
 // Define a grammar called Hello
 grammar Hello;
 
+@header {
+    import java.util.*;
+}
+
+@members {
+    private static Random random = new Random();
+
+    private static int getRandom() {
+        int x = random.nextInt();
+        return x > 0 ? x : -x;
+    }
+
+    private static String addNewVariable(ArrayList<String> addedVariables, ArrayList<String> variables, int index) {
+        StringBuilder sb = new StringBuilder();
+        int randOp = getRandom() % 3;
+        String type = getType(getRandom());
+        String name = getVariableName(index);
+        String rightPart = "";
+        switch (randOp) {
+            case 0: {
+                if (addedVariables.size() == 0) {
+                    rightPart = Integer.toString(getRandom() % 1000);
+                } else {
+                    rightPart = addedVariables.get(getRandom() % addedVariables.size());
+                }
+                break;
+            }
+            case 1: {
+                if (variables.size() == 0) {
+                    rightPart = Integer.toString(getRandom() % 1000);
+                } else {
+                    rightPart = variables.get(getRandom() % variables.size());
+                }
+                break;
+            }
+            case 2: {
+                rightPart = Integer.toString(getRandom() % 1000);
+            }
+        }
+        sb.append(type).append(" ").append(name).append(" = ").append(rightPart).append(";");
+        addedVariables.add(name);
+        return sb.toString();
+    }
+
+    private static String addActionWithVariable(ArrayList<String> addedVariables, ArrayList<String> variables) {
+        StringBuilder sb = new StringBuilder();
+        int randOp = getRandom() % 3;
+        String name = addedVariables.get(getRandom() % addedVariables.size());
+        String rightPart = "";
+        switch (randOp) {
+            case 0: {
+                rightPart = addedVariables.get(getRandom() % addedVariables.size());
+                break;
+            }
+            case 1: {
+                if (variables.size() == 0) {
+                    rightPart = Integer.toString(getRandom() % 1000);
+                } else {
+                    rightPart = addedVariables.get(getRandom() % addedVariables.size());
+                }
+                break;
+            }
+            case 2: {
+                rightPart = Integer.toString(getRandom() % 1000);
+            }
+        }
+        sb.append(name).append(" = ").append(rightPart).append(";");
+
+        return sb.toString();
+    }
+
+    private static String getVariableName(int index) {
+        int curNumber = index / 2;
+        StringBuilder name = new StringBuilder();
+        while (curNumber != 0) {
+            switch (curNumber % 4) {
+                case 0:
+                    name.insert(0, Integer.toString(0));
+                    break;
+                case 1:
+                    name.insert(0, 'O');
+                    break;
+                case 2:
+                    name.insert(0, Integer.toString(1));
+                    break;
+                case 3:
+                    name.insert(0, 'I');
+                    break;
+            }
+            curNumber /= 4;
+        }
+        if (index % 2 == 0) {
+            name.insert(0, 'O');
+        } else {
+            name.insert(0, 'I');
+        }
+        return name.toString();
+    }
+
+    private static String getType(int ind) {
+        ind %= 4;
+        switch (ind) {
+            case 0:
+                return "long";
+            case 1:
+                return "long long";
+            case 2:
+                return "int";
+            case 3:
+                return "bool";
+        }
+        return "";
+    }
+}
+
 start
-    locals [java.util.HashMap<String, String> variables,
+    locals [HashMap<String, String> variables,
+            ArrayList<String> addedVariables,
             int index,
             boolean connectedIostream,
             boolean connectedStd,
             boolean hasReturn]
     @init{
-        $variables = new java.util.HashMap<>();
+        $addedVariables = new ArrayList<>();
+        $variables = new HashMap<>();
         $index = 10;
         $connectedIostream = false;
         $connectedStd = false;
@@ -58,6 +175,20 @@ body
         $hasReturn = false;
     }
     : (line {
+        ArrayList<String> values = new ArrayList<>($start::variables.values());
+        int linesNum = (getRandom() % 7);
+        for (int i = 0; i < linesNum; ++i) {
+            String line = "";
+            if (getRandom() % 2 == 0) {
+                line = addNewVariable($start::addedVariables, values, $start::index);
+                ++$start::index;
+            } else if (!$start::addedVariables.isEmpty()) {
+                line = addActionWithVariable($start::addedVariables, values);
+            }
+            if (!line.isEmpty()) {
+                $sb.append(line).append("\n");
+            }
+        }
         $sb.append($line.sb.toString()).append("\n");
         if ($line.hasReturn) {
             $hasReturn = true;
@@ -101,31 +232,7 @@ variableDeclaration
         if ($start::variables.containsKey(variableName)) {
             throw new RuntimeException("Re-declaring a variable.");
         } else {
-            int curNumber = ($start::index) / 2;
-            StringBuilder name = new StringBuilder();
-            while (curNumber != 0) {
-                switch (curNumber % 4) {
-                    case 0:
-                        name.insert(0, Integer.toString(0));
-                        break;
-                    case 1:
-                        name.insert(0, 'O');
-                        break;
-                    case 2:
-                        name.insert(0, Integer.toString(1));
-                        break;
-                    case 3:
-                        name.insert(0, 'I');
-                        break;
-                }
-                curNumber /= 4;
-            }
-            if (($start::index) % 2 == 0) {
-                name.insert(0, 'O');
-            } else {
-                name.insert(0, 'I');
-            }
-            String newName = name.toString();
+            String newName = getVariableName($start::index);
             $start::variables.put(variableName, newName);
             $sb.append(newName);
             $start::index++;
@@ -203,8 +310,7 @@ type
     : LONG {$sb.append($LONG.text);}
     | LONGLONG {$sb.append($LONGLONG.text);}
     | INT {$sb.append($INT.text);}
-    | BOOL {$sb.append($BOOL.text);}
-    | VOID {$sb.append($VOID.text);};
+    | BOOL {$sb.append($BOOL.text);};
 
 usingLine
     returns [StringBuilder sb]
@@ -364,7 +470,6 @@ LONG: 'long';
 LONGLONG: 'long long';
 INT: 'int';
 BOOL: 'bool';
-VOID: 'void';
 RETURN: 'return';
 EQ: '=';
 CIN: 'cin';

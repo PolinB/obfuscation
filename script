@@ -1,0 +1,5 @@
+#!/bin/bash
+cd results
+g++ -o example example.cpp
+./example
+cd ..
