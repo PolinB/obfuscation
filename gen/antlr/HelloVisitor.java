@@ -124,4 +124,10 @@ public interface HelloVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMulExpression(HelloParser.MulExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#boolValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolValue(HelloParser.BoolValueContext ctx);
 }

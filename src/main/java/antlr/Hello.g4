@@ -17,7 +17,12 @@ start
     : program {
         StringBuilder sb = new StringBuilder();
         sb.append($program.sb.toString());
-        System.out.println(sb.toString());
+        try(java.io.FileOutputStream fos=new java.io.FileOutputStream("/home/polinb/IdeaProjects/Test/results/example.cpp")) {
+            byte[] buffer = sb.toString().getBytes();
+            fos.write(buffer, 0, buffer.length);
+        } catch (java.io.IOException ex){
+            System.out.println(ex.getMessage());
+        }
     } EOF;
 
 program
@@ -169,6 +174,9 @@ integerOrVariableInRightPart
     : INTEGER {
         $sb.append($INTEGER.text);
     }
+    | boolValue {
+        $sb.append($boolValue.sb.toString());
+    }
     | variableInRightPart {
         $sb.append($variableInRightPart.sb.toString());
     };
@@ -254,9 +262,14 @@ coutLine
         $sb.append($COUT.text);
     } (DLEFT {
         $sb.append(" ").append($DLEFT.text).append(" ");
-    } integerOrVariableInRightPart {
+    } (integerOrVariableInRightPart {
         $sb.append($integerOrVariableInRightPart.sb.toString());
-    })+;
+    } | ENDL {
+        if (!$coutLine::hasStd && !$start::connectedStd) {
+            throw new RuntimeException("Forgot to connect std.");
+        }
+        $sb.append($ENDL.text);
+    }))+;
 
 returnLine
     returns [StringBuilder sb]
@@ -329,6 +342,18 @@ mulExpression
         $sb.append($integerOrVariableInRightPart.sb.toString());
     };
 
+boolValue
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : TRUE {
+        $sb.append($TRUE.text);
+    }
+    | FALSE {
+        $sb.append($FALSE.text);
+    };
+
 LPAR: '(';
 RPAR: ')';
 USING: 'using';
@@ -347,6 +372,9 @@ COUT: 'cout';
 DCOLON: '::';
 DLEFT: '<<';
 DRIGHT: '>>';
+ENDL: 'endl';
+TRUE: 'true';
+FALSE: 'false';
 INTEGER: (('-')?[1-9][0-9]* | '0');
 PLUS: '+';
 MUL: '*';
