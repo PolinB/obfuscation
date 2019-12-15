@@ -427,10 +427,12 @@ public class HelloParser extends Parser {
 		public TypeContext type;
 		public Token VARIABLE_NAME;
 		public RightPartContext rightPart;
+		public Token SEMICLONE;
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
 		}
 		public TerminalNode VARIABLE_NAME() { return getToken(HelloParser.VARIABLE_NAME, 0); }
+		public TerminalNode SEMICLONE() { return getToken(HelloParser.SEMICLONE, 0); }
 		public TerminalNode EQ() { return getToken(HelloParser.EQ, 0); }
 		public RightPartContext rightPart() {
 			return getRuleContext(RightPartContext.class,0);
@@ -460,6 +462,7 @@ public class HelloParser extends Parser {
 
 		        ((VariableDeclarationContext)_localctx).sb =  new StringBuilder();
 		    
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -505,15 +508,28 @@ public class HelloParser extends Parser {
 			            ((StartContext)getInvokingContext(0)).index++;
 			        }
 			    
-			setState(67);
-			match(EQ);
+			setState(72);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==EQ) {
+				{
+				setState(67);
+				match(EQ);
 
-			        _localctx.sb.append(" = ");
-			    
-			setState(69);
-			((VariableDeclarationContext)_localctx).rightPart = rightPart();
+				        _localctx.sb.append(" = ");
+				    
+				setState(69);
+				((VariableDeclarationContext)_localctx).rightPart = rightPart();
 
-			        _localctx.sb.append(((VariableDeclarationContext)_localctx).rightPart.sb.toString());
+				        _localctx.sb.append(((VariableDeclarationContext)_localctx).rightPart.sb.toString());
+				    
+				}
+			}
+
+			setState(74);
+			((VariableDeclarationContext)_localctx).SEMICLONE = match(SEMICLONE);
+
+			        _localctx.sb.append((((VariableDeclarationContext)_localctx).SEMICLONE!=null?((VariableDeclarationContext)_localctx).SEMICLONE.getText():null));
 			    
 			}
 		}
@@ -531,11 +547,9 @@ public class HelloParser extends Parser {
 	public static class RightPartContext extends ParserRuleContext {
 		public StringBuilder sb;
 		public IntegerOrVariableInRightPartContext integerOrVariableInRightPart;
-		public Token SEMICLONE;
 		public IntegerOrVariableInRightPartContext integerOrVariableInRightPart() {
 			return getRuleContext(IntegerOrVariableInRightPartContext.class,0);
 		}
-		public TerminalNode SEMICLONE() { return getToken(HelloParser.SEMICLONE, 0); }
 		public RightPartContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -564,15 +578,10 @@ public class HelloParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(72);
+			setState(77);
 			((RightPartContext)_localctx).integerOrVariableInRightPart = integerOrVariableInRightPart();
 
 			        _localctx.sb.append(((RightPartContext)_localctx).integerOrVariableInRightPart.sb.toString());
-			    
-			setState(74);
-			((RightPartContext)_localctx).SEMICLONE = match(SEMICLONE);
-
-			        _localctx.sb.append((((RightPartContext)_localctx).SEMICLONE!=null?((RightPartContext)_localctx).SEMICLONE.getText():null));
 			    
 			}
 		}
@@ -591,11 +600,13 @@ public class HelloParser extends Parser {
 		public StringBuilder sb;
 		public Token VARIABLE_NAME;
 		public RightPartContext rightPart;
+		public Token SEMICLONE;
 		public TerminalNode VARIABLE_NAME() { return getToken(HelloParser.VARIABLE_NAME, 0); }
 		public TerminalNode EQ() { return getToken(HelloParser.EQ, 0); }
 		public RightPartContext rightPart() {
 			return getRuleContext(RightPartContext.class,0);
 		}
+		public TerminalNode SEMICLONE() { return getToken(HelloParser.SEMICLONE, 0); }
 		public VariableChangeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -624,7 +635,7 @@ public class HelloParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(77);
+			setState(80);
 			((VariableChangeContext)_localctx).VARIABLE_NAME = match(VARIABLE_NAME);
 
 			        String variableName = (((VariableChangeContext)_localctx).VARIABLE_NAME!=null?((VariableChangeContext)_localctx).VARIABLE_NAME.getText():null);
@@ -634,15 +645,20 @@ public class HelloParser extends Parser {
 			            throw new RuntimeException("Unknown variable in left part.");
 			        }
 			    
-			setState(79);
+			setState(82);
 			match(EQ);
 
 			        _localctx.sb.append(" = ");
 			    
-			setState(81);
+			setState(84);
 			((VariableChangeContext)_localctx).rightPart = rightPart();
 
 			        _localctx.sb.append(((VariableChangeContext)_localctx).rightPart.sb.toString());
+			    
+			setState(86);
+			((VariableChangeContext)_localctx).SEMICLONE = match(SEMICLONE);
+
+			        _localctx.sb.append((((VariableChangeContext)_localctx).SEMICLONE!=null?((VariableChangeContext)_localctx).SEMICLONE.getText():null));
 			    
 			}
 		}
@@ -689,13 +705,13 @@ public class HelloParser extends Parser {
 		        ((IntegerOrVariableInRightPartContext)_localctx).sb =  new StringBuilder();
 		    
 		try {
-			setState(88);
+			setState(93);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case INTEGER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(84);
+				setState(89);
 				((IntegerOrVariableInRightPartContext)_localctx).INTEGER = match(INTEGER);
 
 				        _localctx.sb.append((((IntegerOrVariableInRightPartContext)_localctx).INTEGER!=null?((IntegerOrVariableInRightPartContext)_localctx).INTEGER.getText():null));
@@ -705,7 +721,7 @@ public class HelloParser extends Parser {
 			case VARIABLE_NAME:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(86);
+				setState(91);
 				((IntegerOrVariableInRightPartContext)_localctx).VARIABLE_NAME = match(VARIABLE_NAME);
 
 				        String variableName = (((IntegerOrVariableInRightPartContext)_localctx).VARIABLE_NAME!=null?((IntegerOrVariableInRightPartContext)_localctx).VARIABLE_NAME.getText():null);
@@ -770,13 +786,13 @@ public class HelloParser extends Parser {
 		        ((TypeContext)_localctx).sb =  new StringBuilder();
 		    
 		try {
-			setState(100);
+			setState(105);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LONG:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(90);
+				setState(95);
 				((TypeContext)_localctx).LONG = match(LONG);
 				_localctx.sb.append((((TypeContext)_localctx).LONG!=null?((TypeContext)_localctx).LONG.getText():null));
 				}
@@ -784,7 +800,7 @@ public class HelloParser extends Parser {
 			case LONGLONG:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(92);
+				setState(97);
 				((TypeContext)_localctx).LONGLONG = match(LONGLONG);
 				_localctx.sb.append((((TypeContext)_localctx).LONGLONG!=null?((TypeContext)_localctx).LONGLONG.getText():null));
 				}
@@ -792,7 +808,7 @@ public class HelloParser extends Parser {
 			case INT:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(94);
+				setState(99);
 				((TypeContext)_localctx).INT = match(INT);
 				_localctx.sb.append((((TypeContext)_localctx).INT!=null?((TypeContext)_localctx).INT.getText():null));
 				}
@@ -800,7 +816,7 @@ public class HelloParser extends Parser {
 			case BOOL:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(96);
+				setState(101);
 				((TypeContext)_localctx).BOOL = match(BOOL);
 				_localctx.sb.append((((TypeContext)_localctx).BOOL!=null?((TypeContext)_localctx).BOOL.getText():null));
 				}
@@ -808,7 +824,7 @@ public class HelloParser extends Parser {
 			case VOID:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(98);
+				setState(103);
 				((TypeContext)_localctx).VOID = match(VOID);
 				_localctx.sb.append((((TypeContext)_localctx).VOID!=null?((TypeContext)_localctx).VOID.getText():null));
 				}
@@ -866,16 +882,16 @@ public class HelloParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(102);
+			setState(107);
 			((UsingLineContext)_localctx).USING = match(USING);
 			_localctx.sb.append((((UsingLineContext)_localctx).USING!=null?((UsingLineContext)_localctx).USING.getText():null)).append(" ");
-			setState(104);
+			setState(109);
 			((UsingLineContext)_localctx).NAMESPACE = match(NAMESPACE);
 			_localctx.sb.append((((UsingLineContext)_localctx).NAMESPACE!=null?((UsingLineContext)_localctx).NAMESPACE.getText():null)).append(" ");
-			setState(106);
+			setState(111);
 			((UsingLineContext)_localctx).STD = match(STD);
 			_localctx.sb.append((((UsingLineContext)_localctx).STD!=null?((UsingLineContext)_localctx).STD.getText():null));
-			setState(108);
+			setState(113);
 			((UsingLineContext)_localctx).SEMICLONE = match(SEMICLONE);
 			_localctx.sb.append((((UsingLineContext)_localctx).SEMICLONE!=null?((UsingLineContext)_localctx).SEMICLONE.getText():null)).append("\n");
 			}
@@ -892,33 +908,34 @@ public class HelloParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\30r\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\30w\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\3"+
 		"\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\7\3\37\n\3\f\3\16\3\"\13\3\3\3\3\3\3\3"+
 		"\5\3\'\n\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\7\4\65\n\4"+
 		"\f\4\16\48\13\4\3\5\3\5\3\5\3\5\3\5\3\5\5\5@\n\5\3\6\3\6\3\6\3\6\3\6\3"+
-		"\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t"+
-		"\3\t\3\t\5\t[\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\ng\n\n\3\13"+
-		"\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\2\2\f\2\4\6\b\n\f\16\20"+
-		"\22\24\2\2\2p\2\26\3\2\2\2\4 \3\2\2\2\6\66\3\2\2\2\b?\3\2\2\2\nA\3\2\2"+
-		"\2\fJ\3\2\2\2\16O\3\2\2\2\20Z\3\2\2\2\22f\3\2\2\2\24h\3\2\2\2\26\27\5"+
-		"\4\3\2\27\30\b\2\1\2\30\31\7\2\2\3\31\3\3\2\2\2\32\33\7\22\2\2\33\34\b"+
-		"\3\1\2\34\35\7\23\2\2\35\37\b\3\1\2\36\32\3\2\2\2\37\"\3\2\2\2 \36\3\2"+
-		"\2\2 !\3\2\2\2!&\3\2\2\2\" \3\2\2\2#$\5\24\13\2$%\b\3\1\2%\'\3\2\2\2&"+
-		"#\3\2\2\2&\'\3\2\2\2\'(\3\2\2\2()\7\24\2\2)*\b\3\1\2*+\7\25\2\2+,\b\3"+
-		"\1\2,-\5\6\4\2-.\b\3\1\2./\7\26\2\2/\60\b\3\1\2\60\5\3\2\2\2\61\62\5\b"+
-		"\5\2\62\63\b\4\1\2\63\65\3\2\2\2\64\61\3\2\2\2\658\3\2\2\2\66\64\3\2\2"+
-		"\2\66\67\3\2\2\2\67\7\3\2\2\28\66\3\2\2\29:\5\n\6\2:;\b\5\1\2;@\3\2\2"+
-		"\2<=\5\16\b\2=>\b\5\1\2>@\3\2\2\2?9\3\2\2\2?<\3\2\2\2@\t\3\2\2\2AB\5\22"+
-		"\n\2BC\b\6\1\2CD\7\27\2\2DE\b\6\1\2EF\7\20\2\2FG\b\6\1\2GH\5\f\7\2HI\b"+
-		"\6\1\2I\13\3\2\2\2JK\5\20\t\2KL\b\7\1\2LM\7\6\2\2MN\b\7\1\2N\r\3\2\2\2"+
-		"OP\7\27\2\2PQ\b\b\1\2QR\7\20\2\2RS\b\b\1\2ST\5\f\7\2TU\b\b\1\2U\17\3\2"+
-		"\2\2VW\7\21\2\2W[\b\t\1\2XY\7\27\2\2Y[\b\t\1\2ZV\3\2\2\2ZX\3\2\2\2[\21"+
-		"\3\2\2\2\\]\7\7\2\2]g\b\n\1\2^_\7\b\2\2_g\b\n\1\2`a\7\t\2\2ag\b\n\1\2"+
-		"bc\7\n\2\2cg\b\n\1\2de\7\13\2\2eg\b\n\1\2f\\\3\2\2\2f^\3\2\2\2f`\3\2\2"+
-		"\2fb\3\2\2\2fd\3\2\2\2g\23\3\2\2\2hi\7\3\2\2ij\b\13\1\2jk\7\4\2\2kl\b"+
-		"\13\1\2lm\7\5\2\2mn\b\13\1\2no\7\6\2\2op\b\13\1\2p\25\3\2\2\2\b &\66?"+
-		"Zf";
+		"\6\3\6\3\6\3\6\5\6K\n\6\3\6\3\6\3\6\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3"+
+		"\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\5\t`\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3"+
+		"\n\3\n\3\n\5\nl\n\n\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13"+
+		"\2\2\f\2\4\6\b\n\f\16\20\22\24\2\2\2v\2\26\3\2\2\2\4 \3\2\2\2\6\66\3\2"+
+		"\2\2\b?\3\2\2\2\nA\3\2\2\2\fO\3\2\2\2\16R\3\2\2\2\20_\3\2\2\2\22k\3\2"+
+		"\2\2\24m\3\2\2\2\26\27\5\4\3\2\27\30\b\2\1\2\30\31\7\2\2\3\31\3\3\2\2"+
+		"\2\32\33\7\22\2\2\33\34\b\3\1\2\34\35\7\23\2\2\35\37\b\3\1\2\36\32\3\2"+
+		"\2\2\37\"\3\2\2\2 \36\3\2\2\2 !\3\2\2\2!&\3\2\2\2\" \3\2\2\2#$\5\24\13"+
+		"\2$%\b\3\1\2%\'\3\2\2\2&#\3\2\2\2&\'\3\2\2\2\'(\3\2\2\2()\7\24\2\2)*\b"+
+		"\3\1\2*+\7\25\2\2+,\b\3\1\2,-\5\6\4\2-.\b\3\1\2./\7\26\2\2/\60\b\3\1\2"+
+		"\60\5\3\2\2\2\61\62\5\b\5\2\62\63\b\4\1\2\63\65\3\2\2\2\64\61\3\2\2\2"+
+		"\658\3\2\2\2\66\64\3\2\2\2\66\67\3\2\2\2\67\7\3\2\2\28\66\3\2\2\29:\5"+
+		"\n\6\2:;\b\5\1\2;@\3\2\2\2<=\5\16\b\2=>\b\5\1\2>@\3\2\2\2?9\3\2\2\2?<"+
+		"\3\2\2\2@\t\3\2\2\2AB\5\22\n\2BC\b\6\1\2CD\7\27\2\2DJ\b\6\1\2EF\7\20\2"+
+		"\2FG\b\6\1\2GH\5\f\7\2HI\b\6\1\2IK\3\2\2\2JE\3\2\2\2JK\3\2\2\2KL\3\2\2"+
+		"\2LM\7\6\2\2MN\b\6\1\2N\13\3\2\2\2OP\5\20\t\2PQ\b\7\1\2Q\r\3\2\2\2RS\7"+
+		"\27\2\2ST\b\b\1\2TU\7\20\2\2UV\b\b\1\2VW\5\f\7\2WX\b\b\1\2XY\7\6\2\2Y"+
+		"Z\b\b\1\2Z\17\3\2\2\2[\\\7\21\2\2\\`\b\t\1\2]^\7\27\2\2^`\b\t\1\2_[\3"+
+		"\2\2\2_]\3\2\2\2`\21\3\2\2\2ab\7\7\2\2bl\b\n\1\2cd\7\b\2\2dl\b\n\1\2e"+
+		"f\7\t\2\2fl\b\n\1\2gh\7\n\2\2hl\b\n\1\2ij\7\13\2\2jl\b\n\1\2ka\3\2\2\2"+
+		"kc\3\2\2\2ke\3\2\2\2kg\3\2\2\2ki\3\2\2\2l\23\3\2\2\2mn\7\3\2\2no\b\13"+
+		"\1\2op\7\4\2\2pq\b\13\1\2qr\7\5\2\2rs\b\13\1\2st\7\6\2\2tu\b\13\1\2u\25"+
+		"\3\2\2\2\t &\66?J_k";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

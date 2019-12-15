@@ -96,10 +96,12 @@ variableDeclaration
             $sb.append(newName);
             $start::index++;
         }
-    } EQ {
+    } (EQ {
         $sb.append(" = ");
     } rightPart {
         $sb.append($rightPart.sb.toString());
+    })? SEMICLONE {
+        $sb.append($SEMICLONE.text);
     };
 
 rightPart
@@ -109,8 +111,6 @@ rightPart
     }
     : integerOrVariableInRightPart {
         $sb.append($integerOrVariableInRightPart.sb.toString());
-    } SEMICLONE {
-        $sb.append($SEMICLONE.text);
     };
 
 variableChange
@@ -129,6 +129,8 @@ variableChange
         $sb.append(" = ");
     } rightPart {
         $sb.append($rightPart.sb.toString());
+    } SEMICLONE {
+        $sb.append($SEMICLONE.text);
     };
 
 integerOrVariableInRightPart
