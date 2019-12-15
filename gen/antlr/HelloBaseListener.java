@@ -52,13 +52,25 @@ public class HelloBaseListener implements HelloListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression(HelloParser.ExpressionContext ctx) { }
+	@Override public void enterVariableDeclaration(HelloParser.VariableDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpression(HelloParser.ExpressionContext ctx) { }
+	@Override public void exitVariableDeclaration(HelloParser.VariableDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIntegerOrVariableInRightPart(HelloParser.IntegerOrVariableInRightPartContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIntegerOrVariableInRightPart(HelloParser.IntegerOrVariableInRightPartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

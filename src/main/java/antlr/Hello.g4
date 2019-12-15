@@ -30,9 +30,9 @@ body
     @init {
         $sb = new StringBuilder();
     }
-    : (expression {$sb.append($expression.sb.toString()).append("\n");})*;
+    : (variableDeclaration {$sb.append($variableDeclaration.sb.toString()).append("\n");})*;
 
-expression
+variableDeclaration
     returns [StringBuilder sb]
     @init {
         $sb = new StringBuilder();
@@ -76,10 +76,27 @@ expression
         }
     } EQ {
         $sb.append(" = ");
-    } INTEGER {
-        $sb.append($INTEGER.text);
+    } integerOrVariableInRightPart {
+        $sb.append($integerOrVariableInRightPart.sb.toString());
     } SEMICLONE {
         $sb.append($SEMICLONE.text);
+    };
+
+integerOrVariableInRightPart
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : INTEGER {
+        $sb.append($INTEGER.text);
+    }
+    | VARIABLE_NAME {
+        String variableName = $VARIABLE_NAME.text;
+        if ($start::variables.containsKey(variableName)) {
+            $sb.append($start::variables.get(variableName));
+        } else {
+            throw new RuntimeException("Unknown variable in right part.");
+        }
     };
 
 type

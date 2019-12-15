@@ -9,14 +9,8 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         try {
-            HelloLexer lexerFst = new HelloLexer(CharStreams.fromString("#include <iostream>\n" +
-                    "#include<string>\n" +
-                    "int main() {\n" +
-                    "int a = 7;\n" +
-                    "int b = 8;\n" +
-                    "int c = 13;\n" +
-                    "int d = 42;\n" +
-                    "}"));
+            //HelloLexer lexerFst = new HelloLexer(CharStreams.fromFileName("/home/polinb/IdeaProjects/Test/src/test/test1.cpp"));
+            HelloLexer lexerFst = new HelloLexer(CharStreams.fromFileName("/home/polinb/IdeaProjects/Test/src/test/test2.cpp"));
             HelloParser parserFst = new HelloParser(new CommonTokenStream(lexerFst));
             parserFst.start();
         } catch (Exception e) {
