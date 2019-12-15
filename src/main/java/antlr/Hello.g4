@@ -2,7 +2,7 @@
 grammar Hello;
 
 start
-    locals [java.util.HashMap<String, String> variables, int index, bool connectedIostream, bool connectedStd]
+    locals [java.util.HashMap<String, String> variables, int index, boolean connectedIostream, boolean connectedStd]
     @init{
         $variables = new java.util.HashMap<>();
         $index = 10;
@@ -21,7 +21,16 @@ program
             $sb = new StringBuilder();
         }
         : (INCLUDE {$sb.append($INCLUDE.text).append(" ");}
-         INCLUDE_NAME {$sb.append($INCLUDE_NAME.text).append("\n");})*
+         INCLUDE_NAME {
+            if (($INCLUDE_NAME.text).equals("<iostream>")) {
+                $start::connectedIostream = true;
+            }
+            $sb.append($INCLUDE_NAME.text).append("\n");
+         })*
+         (usingLine {
+            $start::connectedStd = true;
+            $sb.append("\n").append($usingLine.sb.toString());
+         })?
          MAIN {$sb.append("\n").append($MAIN.text).append(" ");}
          LPF {$sb.append($LPF.text).append("\n");}
          body {$sb.append($body.sb.toString());}
@@ -143,13 +152,26 @@ type
     returns [StringBuilder sb]
     @init {
         $sb = new StringBuilder();
-    }: LONG {$sb.append($LONG.text);}
+    }
+    : LONG {$sb.append($LONG.text);}
     | LONGLONG {$sb.append($LONGLONG.text);}
     | INT {$sb.append($INT.text);}
     | BOOL {$sb.append($BOOL.text);}
     | VOID {$sb.append($VOID.text);};
 
+usingLine
+    returns [StringBuilder sb]
+    @init {
+        $sb = new StringBuilder();
+    }
+    : USING {$sb.append($USING.text).append(" ");}
+    NAMESPACE {$sb.append($NAMESPACE.text).append(" ");}
+    STD {$sb.append($STD.text);}
+    SEMICLONE {$sb.append($SEMICLONE.text).append("\n");};
 
+USING: 'using';
+NAMESPACE: 'namespace';
+STD: 'std';
 SEMICLONE : ';';
 LONG : 'long';
 LONGLONG : 'long long';
@@ -167,5 +189,5 @@ INCLUDE_NAME: '<' [a-zA-Z] [_\\.a-zA-Z]* '>';
 MAIN: 'int main()';
 LPF: '{';
 RPF: '}';
-VARIABLE_NAME : [a-zA-Z][a-zA-Z0-9_]*;
-WS : [ \t\n]+ -> skip;
+VARIABLE_NAME: [a-zA-Z][a-zA-Z0-9_]*;
+WS: [ \t\n]+ -> skip;

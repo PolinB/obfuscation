@@ -64,4 +64,10 @@ public interface HelloVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitType(HelloParser.TypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#usingLine}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUsingLine(HelloParser.UsingLineContext ctx);
 }
