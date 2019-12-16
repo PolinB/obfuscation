@@ -210,4 +210,24 @@ public interface HelloListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBoolValue(HelloParser.BoolValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#comparisonOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterComparisonOp(HelloParser.ComparisonOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#comparisonOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitComparisonOp(HelloParser.ComparisonOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#ifBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfBlock(HelloParser.IfBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#ifBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfBlock(HelloParser.IfBlockContext ctx);
 }

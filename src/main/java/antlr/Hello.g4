@@ -118,13 +118,11 @@ grammar Hello;
 
 start
     locals [HashMap<String, String> variables,
-            ArrayList<String> addedVariables,
             int index,
             boolean connectedIostream,
             boolean connectedStd,
             boolean hasReturn]
     @init{
-        $addedVariables = new ArrayList<>();
         $variables = new HashMap<>();
         $index = 10;
         $connectedIostream = false;
@@ -170,29 +168,34 @@ program
 
 body
     returns [StringBuilder sb, boolean hasReturn]
+    locals [ArrayList<String> addedVariables]
     @init {
         $sb = new StringBuilder();
         $hasReturn = false;
+        $addedVariables = new ArrayList<>();
     }
     : (line {
+        $sb.append($line.sb.toString()).append("\n");
         ArrayList<String> values = new ArrayList<>($start::variables.values());
         int linesNum = (getRandom() % 7);
         for (int i = 0; i < linesNum; ++i) {
             String line = "";
             if (getRandom() % 2 == 0) {
-                line = addNewVariable($start::addedVariables, values, $start::index);
+                line = addNewVariable($body::addedVariables, values, $start::index);
                 ++$start::index;
-            } else if (!$start::addedVariables.isEmpty()) {
-                line = addActionWithVariable($start::addedVariables, values);
+            } else if (!$body::addedVariables.isEmpty()) {
+                line = addActionWithVariable($body::addedVariables, values);
             }
             if (!line.isEmpty()) {
                 $sb.append(line).append("\n");
             }
         }
-        $sb.append($line.sb.toString()).append("\n");
         if ($line.hasReturn) {
             $hasReturn = true;
         }
+    }
+    | ifBlock {
+        $sb.append($ifBlock.sb.toString());
     })*;
 
 line
@@ -460,8 +463,32 @@ boolValue
         $sb.append($FALSE.text);
     };
 
+comparisonOp
+     returns [StringBuilder sb]
+     @init {
+         $sb = new StringBuilder();
+     }
+     : op=(DEQ | NOT_EQ | LS | GT | LSEQ | GTEQ) {
+        $sb.append($op.text);
+     };
+
+ifBlock
+     returns [StringBuilder sb]
+     @init {
+         $sb = new StringBuilder();
+     }
+     : i=(IF | WHILE) LPAR e1=expression comparisonOp e2=expression RPAR {
+        $sb.append($i.text).append(" ").append($LPAR.text)
+            .append($e1.sb.toString()).append(" ").append($comparisonOp.sb.toString()).append(" ").append($e2.sb.toString())
+            .append($RPAR.text).append(" ");
+     } LPF b=body RPF {
+        $sb.append($LPF.text).append("\n").append($b.sb.toString()).append($RPF.text).append("\n");
+     };
+
 LPAR: '(';
 RPAR: ')';
+IF: 'if';
+WHILE: 'while';
 USING: 'using';
 NAMESPACE: 'namespace';
 STD: 'std';
@@ -472,6 +499,12 @@ INT: 'int';
 BOOL: 'bool';
 RETURN: 'return';
 EQ: '=';
+DEQ: '==';
+NOT_EQ: '!=';
+LS: '<';
+GT: '>';
+LSEQ: '<=';
+GTEQ: '>=';
 CIN: 'cin';
 COUT: 'cout';
 DCOLON: '::';

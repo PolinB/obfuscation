@@ -133,4 +133,16 @@ public interface HelloVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBoolValue(HelloParser.BoolValueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#comparisonOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComparisonOp(HelloParser.ComparisonOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HelloParser#ifBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfBlock(HelloParser.IfBlockContext ctx);
 }
