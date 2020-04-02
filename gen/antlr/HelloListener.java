@@ -230,4 +230,14 @@ public interface HelloListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIfBlock(HelloParser.IfBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HelloParser#whileBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhileBlock(HelloParser.WhileBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HelloParser#whileBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhileBlock(HelloParser.WhileBlockContext ctx);
 }

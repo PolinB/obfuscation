@@ -196,6 +196,9 @@ body
     }
     | ifBlock {
         $sb.append($ifBlock.sb.toString());
+    }
+    | whileBlock {
+        $sb.append($whileBlock.sb.toString());
     })*;
 
 line
@@ -477,7 +480,22 @@ ifBlock
      @init {
          $sb = new StringBuilder();
      }
-     : i=(IF | WHILE) LPAR e1=expression comparisonOp e2=expression RPAR {
+     : i=IF LPAR e1=expression comparisonOp e2=expression RPAR {
+        $sb.append($i.text).append(" ").append($LPAR.text)
+            .append($e1.sb.toString()).append(" ").append($comparisonOp.sb.toString()).append(" ").append($e2.sb.toString())
+            .append($RPAR.text).append(" ");
+     } LPF b=body RPF {
+        $sb.append($LPF.text).append("\n").append($b.sb.toString()).append($RPF.text).append("\n");
+     } (ELSE LPF bElse=body RPF {
+        $sb.append($ELSE.text).append($LPF.text).append("\n").append($bElse.sb.toString()).append($RPF.text).append("\n");
+     })?;
+
+whileBlock
+     returns [StringBuilder sb]
+     @init {
+         $sb = new StringBuilder();
+     }
+     : i=WHILE LPAR e1=expression comparisonOp e2=expression RPAR {
         $sb.append($i.text).append(" ").append($LPAR.text)
             .append($e1.sb.toString()).append(" ").append($comparisonOp.sb.toString()).append(" ").append($e2.sb.toString())
             .append($RPAR.text).append(" ");
@@ -488,6 +506,7 @@ ifBlock
 LPAR: '(';
 RPAR: ')';
 IF: 'if';
+ELSE: 'else';
 WHILE: 'while';
 USING: 'using';
 NAMESPACE: 'namespace';
